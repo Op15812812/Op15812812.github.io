@@ -11,31 +11,69 @@
   <div class="container py-5">
     <h1 class="mb-4 text-success"><i class="bi bi-leaf"></i> 碳足跡紀錄器</h1>
 
-    <div class="card mb-4">
+    <div id="login-form" class="card mb-4 d-none">
+      <div class="card-body">
+        <h5 class="card-title">登入</h5>
+        <div class="mb-3">
+          <label for="login-username" class="form-label">使用者名稱</label>
+          <input type="text" id="login-username" class="form-control" placeholder="輸入使用者名稱">
+        </div>
+        <div class="mb-3">
+          <label for="login-password" class="form-label">密碼</label>
+          <input type="password" id="login-password" class="form-control" placeholder="輸入密碼">
+        </div>
+        <button onclick="login()" class="btn btn-primary me-2">登入</button>
+        <button onclick="showRegisterForm()" class="btn btn-secondary">註冊</button>
+      </div>
+    </div>
+
+    <div id="register-form" class="card mb-4 d-none">
+      <div class="card-body">
+        <h5 class="card-title">註冊</h5>
+        <div class="mb-3">
+          <label for="register-username" class="form-label">使用者名稱</label>
+          <input type="text" id="register-username" class="form-control" placeholder="輸入使用者名稱">
+        </div>
+        <div class="mb-3">
+          <label for="register-password" class="form-label">密碼</label>
+          <input type="password" id="register-password" class="form-control" placeholder="輸入密碼">
+        </div>
+        <button onclick="register()" class="btn btn-primary me-2">註冊</button>
+        <button onclick="showLoginForm()" class="btn btn-secondary">返回登入</button>
+      </div>
+    </div>
+
+    <div id="user-info" class="card mb-4 d-none">
+      <div class="card-body">
+        <h5 class="card-title">歡迎，<span id="username-display"></span></h5>
+        <button onclick="logout()" class="btn btn-danger">登出</button>
+      </div>
+    </div>
+
+    <div id="tracking-section" class="card mb-4 d-none">
       <div class="card-body">
         <div class="mb-3">
           <label class="form-label">選擇交通方式：</label><br>
           <div id="transport-options" class="btn-group flex-wrap" role="group"></div>
         </div>
 
-          <div class="card mb-4">
-            <div class="card-body">
-              <h5 class="mb-3">使用地圖選取起點與終點</h5>
-              <div class="row g-2 mb-2">
-                <div class="col-md-6">
-                  <input id="start" class="form-control" placeholder="輸入起點或在地圖上點選" />
-                </div>
-                <div class="col-md-6">
-                  <input id="end" class="form-control" placeholder="輸入終點或在地圖上點選" />
-                </div>
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 class="mb-3">使用地圖選取起點與終點</h5>
+            <div class="row g-2 mb-2">
+              <div class="col-md-6">
+                <input id="start" class="form-control" placeholder="輸入起點或在地圖上點選" />
               </div>
-              <div id="map" style="height: 400px;" class="mb-3"></div>
-              <button onclick="calculateRoute()" class="btn btn-outline-primary">計算地圖距離</button>
-              <p class="mt-2 text-muted" id="map-distance"></p>
+              <div class="col-md-6">
+                <input id="end" class="form-control" placeholder="輸入終點或在地圖上點選" />
+              </div>
             </div>
+            <div id="map" style="height: 400px;" class="mb-3"></div>
+            <button onclick="calculateRoute()" class="btn btn-outline-primary">計算地圖距離</button>
+            <p class="mt-2 text-muted" id="map-distance"></p>
           </div>
+        </div>
 
-        
         <div class="mb-3">
           <label class="form-label">或輸入今日里程 (公里)：</label>
           <input type="number" id="distance" class="form-control" placeholder="例如：5">
@@ -48,21 +86,41 @@
 
     <div id="eco-suggestion" class="alert alert-success d-none"></div>
 
-    <div class="card">
+    <div id="history-section" class="card mb-4 d-none">
       <div class="card-body">
         <h5 class="card-title">目前累積點數：<span id="points">0</span> 點</h5>
         <ul id="history-list" class="list-group list-group-flush mt-3"></ul>
       </div>
     </div>
+
+    <div id="leaderboard-section" class="card mb-4 d-none">
+      <div class="card-body">
+        <h5 class="card-title">排行榜</h5>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>排名</th>
+              <th>使用者</th>
+              <th>總點數</th>
+              <th>總碳足跡</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-list"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="rewards-section" class="card mb-4 d-none">
+      <div class="card-body">
+        <h5 class="card-title">兌換獎勵</h5>
+        <div id="rewards-list"></div>
+      </div>
+    </div>
   </div>
 
-
-
-  
-  <script src="main.js"></script>
+  <script src="script.js"></script>
   <script async
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAphkYf9MXbZuU0QdWHmu7dER5YtYEijrQ&libraries=places&callback=initMap">
-  </script> 
-
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAphkYf9MXbZuU0QdWHmu7dER5YtYEijrQ&libraries=places&callback=initMap">
+  </script>
 </body>
 </html>
