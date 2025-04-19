@@ -6,6 +6,7 @@ let watchId = null;
 let positions = [];
 
 window.onload = () => {
+  // 生成交通方式按鈕
   const container = document.getElementById("transport-options");
   transportOptions.forEach(option => {
     const btn = document.createElement("button");
@@ -18,6 +19,9 @@ window.onload = () => {
     };
     container.appendChild(btn);
   });
+
+  // 載入歷史紀錄和點數
+  loadHistory();
 };
 
 function calculateFootprint(transport, dist) {
@@ -40,6 +44,7 @@ function startTracking() {
       lon: pos.coords.longitude,
       time: Date.now()
     });
+    console.log("收到位置：", pos.coords.latitude, pos.coords.longitude); // 除錯用
   }, err => {
     alert("無法取得位置資訊: " + err.message);
   }, { enableHighAccuracy: true });
@@ -57,8 +62,32 @@ function stopTracking() {
     totalDistance = totalDistance.toFixed(3);
 
     const footprint = calculateFootprint(selectedTransport, totalDistance);
-    history.unshift({ transport: selectedTransport, distance: totalDistance, footprint });
-    points += 10;
+    const pointsEarned = 10; // 每次紀錄獲得 10 點
+    points += pointsEarned;
+
+    history.unshift({ transport: selectedTransport, distance: totalDistance, footprint, points: pointsEarned });
+
+    // 將資料送到後端，包括 points
+    fetch('backend.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        transport: selectedTransport,
+        distance: totalDistance,
+        footprint: footprint,
+        points: pointsEarned
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('後端回應：', data);
+      if (data.status === 'success') {
+        console.log('資料儲存成功');
+      } else {
+        console.error('儲存資料失敗:', data.message);
+      }
+    })
+    .catch(error => console.error('傳送錯誤:', error));
 
     updateUI();
     suggestEcoPath(selectedTransport);
@@ -66,7 +95,7 @@ function stopTracking() {
 }
 
 function haversineDistance(p1, p2) {
-  const R = 6371; // km
+  const R = 6371; // 地球半徑（公里）
   const toRad = deg => deg * Math.PI / 180;
   const dLat = toRad(p2.lat - p1.lat);
   const dLon = toRad(p2.lon - p1.lon);
@@ -99,4 +128,21 @@ function suggestEcoPath(transport) {
     suggestion.textContent = "你選擇了很環保的交通方式，繼續保持！";
   }
   suggestion.classList.remove("d-none");
+}
+
+function loadHistory (elevee){
+  fetch('backend.php', { method: 'GET' })
+    .then(response => response.json())
+    .then(records => {
+      history = records.map(record => ({
+        transport: record.transport,
+        distance: record.distance,
+        footprint: record.footprint,
+        points: record.points
+      }));
+      // 計算總點數
+      points = history.reduce((total, record) => total + (record.points || 0), 0);
+      updateUI();
+    })
+    .catch(error => console.error('載入歷史紀錄失敗:', error));
 }
