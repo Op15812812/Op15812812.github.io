@@ -17,8 +17,27 @@
           <label class="form-label">選擇交通方式：</label><br>
           <div id="transport-options" class="btn-group flex-wrap" role="group"></div>
         </div>
+
+          <div class="card mb-4">
+            <div class="card-body">
+              <h5 class="mb-3">使用地圖選取起點與終點</h5>
+              <div class="row g-2 mb-2">
+                <div class="col-md-6">
+                  <input id="start" class="form-control" placeholder="輸入起點或在地圖上點選" />
+                </div>
+                <div class="col-md-6">
+                  <input id="end" class="form-control" placeholder="輸入終點或在地圖上點選" />
+                </div>
+              </div>
+              <div id="map" style="height: 400px;" class="mb-3"></div>
+              <button onclick="calculateRoute()" class="btn btn-outline-primary">計算地圖距離</button>
+              <p class="mt-2 text-muted" id="map-distance"></p>
+            </div>
+          </div>
+
+        
         <div class="mb-3">
-          <label class="form-label">輸入今日里程 (公里)：</label>
+          <label class="form-label">或輸入今日里程 (公里)：</label>
           <input type="number" id="distance" class="form-control" placeholder="例如：5">
         </div>
         <button onclick="handleSubmit()" class="btn btn-success me-2">手動紀錄</button>
@@ -37,22 +56,9 @@
     </div>
   </div>
 
-  <div class="card mb-4">
-    <div class="card-body">
-      <h5 class="mb-3">使用地圖選取起點與終點</h5>
-      <div class="row g-2 mb-2">
-        <div class="col-md-6">
-          <input id="start" class="form-control" placeholder="輸入起點或在地圖上點選" />
-        </div>
-        <div class="col-md-6">
-          <input id="end" class="form-control" placeholder="輸入終點或在地圖上點選" />
-        </div>
-      </div>
-      <div id="map" style="height: 400px;" class="mb-3"></div>
-      <button onclick="calculateRoute()" class="btn btn-outline-primary">計算地圖距離</button>
-      <p class="mt-2 text-muted" id="map-distance"></p>
-    </div>
-  </div>
+
+
+  
   <script src="main.js"></script>
   <script async
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAphkYf9MXbZuU0QdWHmu7dER5YtYEijrQ&libraries=places&callback=initMap">
