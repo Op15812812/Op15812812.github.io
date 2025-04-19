@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>碳足跡紀錄器</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="style.css" rel="stylesheet">
 </head>
 <body class="bg-light">
   <div class="container py-5">
@@ -17,8 +17,13 @@
           <label class="form-label">選擇交通方式：</label><br>
           <div id="transport-options" class="btn-group flex-wrap" role="group"></div>
         </div>
-        <button onclick="startTracking()" class="btn btn-success">開始紀錄移動</button>
-        <button onclick="stopTracking()" class="btn btn-danger ms-2">停止紀錄</button>
+        <div class="mb-3">
+          <label class="form-label">輸入今日里程 (公里)：</label>
+          <input type="number" id="distance" class="form-control" placeholder="例如：5">
+        </div>
+        <button onclick="handleSubmit()" class="btn btn-success me-2">手動紀錄</button>
+        <button onclick="startTracking()" class="btn btn-primary me-2">開始追蹤</button>
+        <button onclick="stopTracking()" class="btn btn-danger">停止並紀錄</button>
       </div>
     </div>
 
@@ -32,6 +37,26 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="mb-3">使用地圖選取起點與終點</h5>
+      <div class="row g-2 mb-2">
+        <div class="col-md-6">
+          <input id="start" class="form-control" placeholder="輸入起點或在地圖上點選" />
+        </div>
+        <div class="col-md-6">
+          <input id="end" class="form-control" placeholder="輸入終點或在地圖上點選" />
+        </div>
+      </div>
+      <div id="map" style="height: 400px;" class="mb-3"></div>
+      <button onclick="calculateRoute()" class="btn btn-outline-primary">計算地圖距離</button>
+      <p class="mt-2 text-muted" id="map-distance"></p>
+    </div>
+  </div>
+  <script src="main.js"></script>
+  <script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAphkYf9MXbZuU0QdWHmu7dER5YtYEijrQ&libraries=places&callback=initMap">
+  </script> 
+
 </body>
 </html>
